@@ -1,0 +1,52 @@
+<header class="top-header">
+  <img src="assets/logo-transparent.png" alt="University Logo" class="header-logo" />
+  <h1>Acıbadem Üniversitesi Öğrenci İşleri</h1>
+</header>
+
+<button class="dark-mode-toggle" (click)="toggleDarkMode()">
+  {{ isDarkMode ? '☀️' : '🌙' }}
+</button>
+
+<div class="chatbot">
+  <header>
+    <h2>Öğrenci Yapay Zeka Asistanı</h2>
+  </header>
+
+  <ul class="chatbox" #chatboxRef>
+    <li class="incoming chat">
+      <span>
+        <img src="assets/logo-transparent.png" alt="Chatbot Logo" style="width: 32px; height: 32px;" />
+      </span>
+      <p>Merhabalar 👋 <br />Bugün size nasıl yardımcı olabilirim?</p>
+      <small style="display: block; font-size: 0.75rem; color: #888; margin-top: 5px;">
+        {{ getTimestamp() }}
+      </small>
+    </li>
+
+    <ng-container *ngFor="let msg of chatboxMessages">
+      <li [class]="msg.type + ' chat'">
+        <span *ngIf="msg.type === 'incoming'">
+          <img src="assets/logo-transparent.png" alt="Chatbot Logo" style="width: 32px; height: 32px;" />
+        </span>
+        <p>{{ msg.message }}</p>
+        <small *ngIf="msg.timestamp" style="display: block; font-size: 0.75rem; color: #888; margin-top: 5px;">
+          {{ msg.timestamp }}
+        </small>
+      </li>
+    </ng-container>
+  </ul>
+
+  <div class="chat-input">
+    <textarea
+      [(ngModel)]="chatInput"
+      placeholder="Bir mesaj yaz..."
+      required
+      (keydown)="handleKeyDown($event)"
+    ></textarea>
+    <span class="material-symbols-outlined" (click)="handleSendClick()">send</span>
+  </div>
+</div>
+
+<div class="rate-limit-popup" *ngIf="showPopup">
+  Lütfen yeni bir mesaj göndermeden önce birkaç saniye bekleyin
+</div>
